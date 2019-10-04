@@ -4,6 +4,11 @@ import Cockpit from '../components/Cockpit/Cockpit'
 import Persons from '../components/Persons/Persons'
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+  }
+
   state = {
     persons: [
       { id: 'sadfg', name: 'Ross', age: 30 },
@@ -12,6 +17,11 @@ class App extends Component {
     ],
     otherState: 'some other value',
     showPersons: false
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerivedStateFromProps', props);
+    return state;
   }
 
   switchNameHandler = (newName) => {
@@ -24,6 +34,11 @@ class App extends Component {
         { name: 'Zoe', age: 23 }
       ]
     } )
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+    
   }
 
   nameChangedHandler = (event, id) => {
@@ -56,24 +71,23 @@ class App extends Component {
   }
 
   render() {
+    console.log('[App.js] render');
+    
     let persons = null;
-    let btnClass = '';
 
     if ( this.state.showPersons ) {
       persons = (
-        <div>
-          <Persons 
-            persons={this.state.persons}
-            clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler}
-          />
-        </div>
+        <Persons 
+          persons={this.state.persons}
+          clicked={this.deletePersonHandler}
+          changed={this.nameChangedHandler} />
       );
     }
 
     return (
       <div className={classes.App}>
-        <Cockpit 
+        <Cockpit
+          title={this.props.appTitle}
           showPersons={this.state.showPersons} 
           persons={this.state.persons}
           clicked={this.togglePersonsHandler} />
